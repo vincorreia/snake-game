@@ -6,6 +6,7 @@ import Snake from "./Snake"
 export default function Game(){
     const canvas = useRef(null)
     const [context, setContext] = useState(null)
+    const [direction, setDirection] = useState("RIGHT");
     const [score, setScore] = useState(0);
     const [snakeBody, setSnakeBody] = useState([
         {x:100, y:100},
@@ -25,16 +26,16 @@ export default function Game(){
     function handleKey(event) {
         switch(event.key){
             case 'ArrowUp':
-                console.log("MOVE_UP")
+                setDirection("UP")
                 break
             case 'ArrowDown':
-                console.log("MOVE_DOWN")
+                setDirection("DOWN")
                 break
             case 'ArrowLeft':
-                console.log('MOVE_LEFT')
+                setDirection('LEFT')
                 break
             case 'ArrowRight':
-                console.log("MOVE_RIGHT")
+                setDirection("RIGHT")
                 break
             default:
         }
@@ -60,6 +61,7 @@ export default function Game(){
             canvas={context} 
             snakeBody={snakeBody}
             functions={functions}
+            direction={direction}
             />
         }
         
