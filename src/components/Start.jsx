@@ -9,7 +9,7 @@ export default function Start(props){
     useEffect(() => {
         if(!isRunning){
             context.fillStyle = "white"
-            context.font = "30px Arial"
+            context.font = "30px 'Press Start 2P'"
             context.textAlign = "center"
             context.fillText(text, canvas.width/2, (canvas.height/2) - 20)
         }
