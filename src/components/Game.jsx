@@ -23,6 +23,7 @@ export default function Game(){
     const [score, setScore] = useState(0);
     const [snakeBody, setSnakeBody] = useState(initialSnake)
     const [isRunning, setIsRunning] = useState(true)
+    var previousDirection = "RIGHT";
     const functions = [setSnakeBody, setScore, clearCanvas, generateApple, setDirection, setIsRunning]
     
     function clearCanvas() {
@@ -32,16 +33,28 @@ export default function Game(){
     function handleKey(event) {
         switch(event.key){
             case 'ArrowUp':
-                setDirection("UP")
+                if(previousDirection !== "DOWN"){
+                    setDirection("UP")
+                    previousDirection = "UP"
+                }
                 break
             case 'ArrowDown':
-                setDirection("DOWN")
+                if(previousDirection !== "UP"){
+                    setDirection("DOWN")
+                    previousDirection = "DOWN"
+                }
                 break
             case 'ArrowLeft':
-                setDirection('LEFT')
+                if(previousDirection !== "RIGHT"){
+                    setDirection("LEFT")
+                    previousDirection = "LEFT"
+                }
                 break
             case 'ArrowRight':
-                setDirection("RIGHT")
+                if(previousDirection !== "LEFT"){
+                    setDirection("RIGHT")
+                    previousDirection = "RIGHT"
+                }
                 break
             default:
         }
