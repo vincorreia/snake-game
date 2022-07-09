@@ -3,6 +3,7 @@ import Apple from "./Apple";
 import "./Game.css";
 import ScoreBoard from "./ScoreBoard";
 import Snake from "./Snake"
+import Start from "./Start";
 
 export default function Game(){
     const initialSnake = [
@@ -16,15 +17,16 @@ export default function Game(){
     const canvas = useRef(null)
     const [context, setContext] = useState(null)
     const [direction, setDirection] = useState("RIGHT");
+    const [text, setText] = useState("Press ENTER to start")
     const [apple, setApple] = useState({
         x: (Math.floor(Math.random() * ((canvasDetails.width - 20) / 20))) * 20,
         y: (Math.floor(Math.random() * ((canvasDetails.height - 20) / 20))) * 20
     })
     const [score, setScore] = useState(0);
     const [snakeBody, setSnakeBody] = useState(initialSnake)
-    const [isRunning, setIsRunning] = useState(true)
-    var previousDirection = "RIGHT";
-    const functions = [setSnakeBody, setScore, clearCanvas, generateApple, setDirection, setIsRunning]
+    const [isRunning, setIsRunning] = useState(false)
+    var previousDirection = "RIGHT"
+    const functions = [setSnakeBody, setScore, clearCanvas, generateApple, setIsRunning, reset]
     
     function clearCanvas() {
         context.clearRect(0, 0, canvasDetails.width, canvasDetails.height);
@@ -56,7 +58,14 @@ export default function Game(){
                     previousDirection = "RIGHT"
                 }
                 break
+            case 'Enter':
+                if(!isRunning){
+                    setIsRunning(true)
+                    previousDirection="RIGHT"
+                }
+                break
             default:
+                console.log(event.key)
         }
     }
 
@@ -69,6 +78,16 @@ export default function Game(){
 
         setApple({x: randomX, y:randomY})
     }
+
+    function reset(){
+        if(snakeBody[0].x !== initialSnake[0].x || snakeBody[0].y !== initialSnake[0].y){
+            setText("You died! Press ENTER to restart")
+            setSnakeBody(initialSnake)
+            generateApple()
+            setDirection("RIGHT")
+            setScore(0)
+        }
+    }
     useEffect(() => {
         if(canvas.current){
             setContext(canvas.current.getContext("2d"));
@@ -76,16 +95,6 @@ export default function Game(){
         }
     },[canvas])
 
-
-    useEffect(() => {
-        if(!isRunning){
-            setSnakeBody(initialSnake)
-            setDirection("RIGHT")
-            setScore(0)
-            generateApple()
-            setIsRunning(true)
-        }
-    }, [isRunning])
     return (<div>
         <ScoreBoard score={score}/>
         <canvas 
@@ -108,7 +117,14 @@ export default function Game(){
             canvas={context}
             generateApple={generateApple} 
             snakeBody={snakeBody} 
-            apple={apple}></Apple>
+            apple={apple}
+            />
+            <Start 
+                isRunning={isRunning}
+                context={context}
+                text={text}
+                canvas={canvasDetails}
+            />
         </>
         }
         

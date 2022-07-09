@@ -6,7 +6,7 @@ export default function Snake(props) {
    const direction = props.direction
    const isRunning = props.isRunning
    const appleLocation = props.appleLocation
-   const [setSnakeBody, setScore, clearCanvas, generateApple, setDirection, setIsRunning] = props.functions;
+   const [setSnakeBody, setScore, clearCanvas, generateApple, setIsRunning, reset] = props.functions;
    const snakeBody = props.snakeBody
    const [partWidth, partHeight] = [20, 20]
    const head = snakeBody[0]
@@ -73,23 +73,22 @@ export default function Snake(props) {
    }
    // Render snake on the screen and remove the snake previous location
     useEffect(() => {
-
-      // What to do if the user is not dead
-      
-      if(isRunning){
          clearCanvas()
-         var timeout = setTimeout(() => {move(direction, snakeBody)}, 100);
-         
          snakeBody.forEach(part => {
             context.fillStyle = "white"
             context.fillRect(part.x, part.y, partWidth, partHeight)
          })
+      // What to do if the user is not dead
+      
+      if(isRunning){
+         var timeout = setTimeout(() => {move(direction, snakeBody)}, 100);
       } 
 
       //What to do if the user is dead
       else {
          clearMove(timeout);
+         reset();
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [snakeBody])
+    }, [snakeBody, isRunning])
 }
