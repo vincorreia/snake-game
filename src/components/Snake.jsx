@@ -1,17 +1,8 @@
-import { timeDay, timeout } from "d3";
-import React from "react";
 import { useEffect } from "react";
 
 
 
 export default function Snake(props) {
-   const initialSnake = [
-      {x:100, y:100},
-      {x:80, y:100},
-      {x:60, y:100},
-      {x:40, y:100},
-      {x:20, y:100}
-  ]
    const direction = props.direction
    const isRunning = props.isRunning
    const appleLocation = props.appleLocation

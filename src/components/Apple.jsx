@@ -1,5 +1,3 @@
-import React from "react";
-import { useEffect } from "react";
 import { useDidMountEffect } from "../hooks/useDidMountEffect"
 export default function Apple(props){
     const context = props.canvas
