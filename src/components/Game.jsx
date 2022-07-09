@@ -5,6 +5,13 @@ import ScoreBoard from "./ScoreBoard";
 import Snake from "./Snake"
 
 export default function Game(){
+    const initialSnake = [
+        {x:100, y:100},
+        {x:80, y:100},
+        {x:60, y:100},
+        {x:40, y:100},
+        {x:20, y:100}
+    ]
     const canvasDetails = {width: 1000, height:600};
     const canvas = useRef(null)
     const [context, setContext] = useState(null)
@@ -14,15 +21,10 @@ export default function Game(){
         y: (Math.floor(Math.random() * ((canvasDetails.height - 20) / 20))) * 20
     })
     const [score, setScore] = useState(0);
-    const [snakeBody, setSnakeBody] = useState([
-        {x:100, y:100},
-        {x:80, y:100},
-        {x:60, y:100},
-        {x:40, y:100},
-        {x:20, y:100}
-    ])
-    const functions = [setSnakeBody, setScore, clearCanvas, generateApple]
-
+    const [snakeBody, setSnakeBody] = useState(initialSnake)
+    const [isRunning, setIsRunning] = useState(true)
+    const functions = [setSnakeBody, setScore, clearCanvas, generateApple, setDirection, setIsRunning]
+    
     function clearCanvas() {
         context.clearRect(0, 0, canvasDetails.width, canvasDetails.height);
     }
@@ -61,6 +63,16 @@ export default function Game(){
         }
     },[canvas])
 
+
+    useEffect(() => {
+        if(!isRunning){
+            setSnakeBody(initialSnake)
+            setDirection("RIGHT")
+            setScore(0)
+            generateApple()
+            setIsRunning(true)
+        }
+    }, [isRunning])
     return (<div>
         <ScoreBoard score={score}/>
         <canvas 
@@ -72,6 +84,7 @@ export default function Game(){
         {canvas.current &&
         <>
             <Snake 
+            isRunning={isRunning}
             canvas={context} 
             snakeBody={snakeBody}
             functions={functions}
